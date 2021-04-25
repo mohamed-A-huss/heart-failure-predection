@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:heartfailurepredictor/NormalData.dart';
-import 'package:heartfailurepredictor/BloodDataScreen.dart';
-import 'package:heartfailurepredictor/HeartCond.dart';
-import 'package:heartfailurepredictor/ResultScreen.dart';
+import 'package:heartfailurepredictor/Screens/NormalData.dart';
+import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
+import 'package:heartfailurepredictor/Screens/HeartCond.dart';
+import 'package:heartfailurepredictor/Screens/ResultScreen.dart';
 void main() => runApp(FlashChat());
 
 class FlashChat extends StatelessWidget {

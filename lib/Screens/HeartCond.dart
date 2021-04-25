@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import './Animation/FadeAnimation.dart';
-import 'package:heartfailurepredictor/ResultScreen.dart';
-
+import '../Animation/FadeAnimation.dart';
+import 'package:heartfailurepredictor/Screens/ResultScreen.dart';
+import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+int efracdata;
+int hbpdata;
 class HeartData extends StatefulWidget {
   static const String id = 'heart data';
   @override
@@ -99,6 +103,13 @@ class _HeartDataState extends State<HeartData> {
                             child: Padding(
                               padding: const EdgeInsets.only(top:50.0),
                               child: TextField(
+                                keyboardType: TextInputType.number,
+
+                                onChanged: (value){
+                                  setState(() {
+                                    efracdata=int.parse(value);
+                                  });
+                                },
                                 style: TextStyle(
                                     color: Colors.white
                                 ),
@@ -129,11 +140,20 @@ class _HeartDataState extends State<HeartData> {
                                   style: TextStyle(color: Colors.white),
                                   iconEnabledColor:Colors.black,
                                   items: <String>[
-                                    'Yes',
-                                    'No',
+                                    'High Blood Pressure: Yes',
+                                    'High Blood Pressure: No',
 
                                   ].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
+                                      onTap: (){
+                                        if(value=='High Blood Pressure: Yes'){
+                                          hbpdata=1;
+
+                                        }else if(value== 'High Blood Pressure: No'){
+                                          hbpdata=0;
+                                        }
+
+                                      },
 
                                       value: value,
 
@@ -181,10 +201,30 @@ class _HeartDataState extends State<HeartData> {
                     child: FadeAnimation(
                       1,
                       GestureDetector(
-                        onTap: (){
+                        onTap: ()async{
+                          if( efracdata != null && hbpdata != null ){
+                            patientData["ejection_fraction"]=efracdata;
+                            patientData["high_blood_pressure"]=hbpdata;
+                            print(patientData);
+                            final response = await http.post('http://10.0.2.2:5000/p',body: json.encode(patientData)); //getting the response from our backend server script
+                            //print(response);
+                            final decoded = json.decode(response.body) as Map<String, dynamic>; //converting it from json to key value pair
+
+                            setState(() {
+                               predection = decoded['name'];
+
+                              print(predection);//changing the state of our widget on data update
+                            });
+                            if(response.statusCode==200){
+                              Navigator.pushNamed(context, Result.id);
+                            }
+
+
+
+                          }
                           //take the data
                           // check empty data
-                          Navigator.pushNamed(context, Result.id);
+
 
 
                         },

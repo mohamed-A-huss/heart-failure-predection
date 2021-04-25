@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
-import './Animation/FadeAnimation.dart';
-import 'package:heartfailurepredictor/HeartCond.dart';
+import '../Animation/FadeAnimation.dart';
+import 'package:heartfailurepredictor/Screens/HeartCond.dart';
+import 'package:heartfailurepredictor/Screens/RegressionData.dart';
 
+
+int anemiadata;
+int ckdata;
+int ssodiumdata;
+int plateletsdata;
+int screatidata;
 class BloodData extends StatefulWidget {
   static const String id = 'blood data';
   @override
@@ -94,12 +101,20 @@ class _BloodDataState extends State<BloodData> {
                           style: TextStyle(color: Colors.white),
                           iconEnabledColor:Colors.black,
                           items: <String>[
-                            'Yes',
-                            'No',
+                            'Anemia: Yes',
+                            'Anemia: No',
 
                           ].map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
+                              onTap: (){
+                                if(value=='Anemia: Yes'){
+                                  anemiadata=1;
 
+                                }else if(value== 'Anemia: No'){
+                                  anemiadata=0;
+                                }
+
+                              },
                               value: value,
 
                               child: Padding(
@@ -153,6 +168,13 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              onChanged: (value){
+                                setState(() {
+
+                                  ckdata=int.parse(value);
+                                });
+                              },
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   color: Colors.white
                               ),
@@ -173,6 +195,13 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              onChanged: (value){
+                                setState(() {
+
+                                  ssodiumdata=int.parse(value);
+                                });
+                              },
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   color: Colors.white
                               ),
@@ -193,6 +222,13 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              onChanged: (value){
+                                setState(() {
+
+                                  plateletsdata=int.parse(value);
+                                });
+                              },
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   color: Colors.white
                               ),
@@ -215,6 +251,13 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              onChanged: (value){
+                                setState(() {
+
+                                  screatidata=int.parse(value);
+                                });
+                              },
+                              keyboardType: TextInputType.number,
                               style: TextStyle(
                                   color: Colors.white
                               ),
@@ -240,8 +283,18 @@ class _BloodDataState extends State<BloodData> {
                       onTap: (){
                         //take the data
                         // check empty data
+                        if( anemiadata != null && ckdata != null && ssodiumdata != null && plateletsdata != null && screatidata != null){
 
-                        Navigator.pushNamed(context, HeartData.id);
+
+                          patientData["anaemia"]=anemiadata;
+                          patientData["creatinine_phosphokinase"]=ckdata;
+                          patientData["serum_sodium"]= ssodiumdata;
+                          patientData["platelets"]= plateletsdata;
+                          patientData["serum_creatinine"]= screatidata;
+                          print(patientData);
+                          Navigator.pushNamed(context, HeartData.id);
+                        }
+
 
                       },
                       child: Container(

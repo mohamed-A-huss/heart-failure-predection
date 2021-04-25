@@ -30,6 +30,10 @@ dependencies:
   cupertino_icons: ^1.0.0
   simple_animations: ^1.3.4
   percent_indicator:
+  charts_flutter: ^0.10.0
+  http:
+  fcharts: ^0.0.11
+
 
 dev_dependencies:
   flutter_test:

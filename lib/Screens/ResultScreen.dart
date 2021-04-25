@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
-import './Animation/FadeAnimation.dart';
+import '../Animation/FadeAnimation.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+import 'package:heartfailurepredictor/Screens/NormalData.dart';
 
 class Result extends StatefulWidget {
+
   static const String id = 'Result data';
   @override
   _ResultState createState() => _ResultState();
 }
 
 class _ResultState extends State<Result> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,9 +42,9 @@ class _ResultState extends State<Result> {
                       radius: 150.0,
                       lineWidth: 10.0,
                       animation: true,
-                      percent: 0.7,
+                      percent: (double.parse(predection.substring(1,6))),
                       center:  Text(
-                        "70.0%",
+                        "${(double.parse(predection.substring(1,6)))*100}%",
                         style:
                          TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 30.0),
                       ),
@@ -56,8 +58,11 @@ class _ResultState extends State<Result> {
                       ),
                       circularStrokeCap: CircularStrokeCap.round,
                       progressColor: Colors.red,
-                  ),
                    ),
+                   ),
+                  SizedBox(
+                    height: 20.0,
+                  ),
 
 
 
@@ -69,8 +74,7 @@ class _ResultState extends State<Result> {
                         onTap: (){
                           //take the data
                           // check empty data
-
-
+                          Navigator.pushNamed(context, PersonalDatascreen.id);
 
                         },
                         child: Container(
@@ -93,6 +97,7 @@ class _ResultState extends State<Result> {
                   SizedBox(
                     height: 20.0,
                   ),
+
                 ],
               ),
             )

@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
-import './Animation/FadeAnimation.dart';
-import 'package:heartfailurepredictor/BloodDataScreen.dart';
-
-
+import '../Animation/FadeAnimation.dart';
+import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
+import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+int agedata;
+int smokerdata;
+int diabetsdata;
+int genderdata;
+int followudata;
 class PersonalDatascreen extends StatefulWidget {
   static const String id = 'personalScreen';
   @override
   _PersonalDatascreenState createState() => _PersonalDatascreenState();
 }
+TextEditingController agecont;
+Color emptyfield=Colors.red;
+Color normalField=Colors.grey[100];
 
+Color agecolor=normalField;
+Color smokecolor=normalField;
+Color gendercolor=normalField;
+Color diabetescolor=normalField;
+Color followucolor=normalField;
 class _PersonalDatascreenState extends State<PersonalDatascreen> {
   String _chosenGender;
   String _chosenSmoker;
@@ -92,18 +104,27 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Colors.grey[100],
+                                  color: agecolor,
                                 ),
                               ),
                             ),
                             child: TextField(
+
+
+                                keyboardType: TextInputType.number,
+
+                              onChanged: (value){
+                                setState(() {
+                                  agedata=int.parse(value);
+                                });
+                              },
                               style: TextStyle(
                                 color: Colors.white
                               ),
                               decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Age",
-                                hintStyle: TextStyle(color: Colors.grey,),
+                                hintStyle: TextStyle(color: Colors.grey),
                               ),
                             ),
                           ),
@@ -113,6 +134,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                               child: DropdownButtonHideUnderline(
 
                                 child: DropdownButton<String>(
+
                                   icon: Icon(                // Add this
                                     Icons.arrow_drop_down,  // Add this
                                     color: Colors.grey,   // Add this
@@ -126,14 +148,23 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   style: TextStyle(color: Colors.white),
                                   iconEnabledColor:Colors.black,
                                   items: <String>[
-                                    'Male',
-                                    'Female',
+                                    'Gender: Male',
+                                    'Gender: Female',
 
                                   ].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
+                                      onTap: (){
+                                        if(value=='Gender: Male'){
+                                          genderdata=1;
+
+                                        }else if(value== 'Gender: Female'){
+                                          genderdata=0;
+                                        }
+
+                                      },
+
 
                                       value: value,
-
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 9.0),
                                         child: Text(value,style:TextStyle(color:Colors.white),),
@@ -160,7 +191,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             ),
                           ),
                           Divider(
-                            color: Colors.grey,
+                            color: gendercolor,
                             height: 6,
                             thickness: 2,
 
@@ -185,11 +216,20 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   style: TextStyle(color: Colors.white),
                                   iconEnabledColor:Colors.black,
                                   items: <String>[
-                                    'Yes',
-                                    'No',
+                                    'Smoker: Yes',
+                                    'Smoker: No',
 
                                   ].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
+                                      onTap: (){
+                                        if(value=='Smoker: Yes'){
+                                          smokerdata=1;
+
+                                        }else if(value== 'Smoker: No'){
+                                          smokerdata=0;
+                                        }
+
+                                      },
 
                                       value: value,
 
@@ -219,7 +259,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             ),
                           ),
                           Divider(
-                            color: Colors.grey,
+                            color: smokecolor,
                             height: 6,
                             thickness: 2,
 
@@ -244,11 +284,20 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   style: TextStyle(color: Colors.white),
                                   iconEnabledColor:Colors.black,
                                   items: <String>[
-                                    'Yes',
-                                    'No',
+                                    'Diabetes: Yes',
+                                    'Diabetes: No',
 
                                   ].map<DropdownMenuItem<String>>((String value) {
                                     return DropdownMenuItem<String>(
+                                      onTap: (){
+                                        if(value=='Diabetes: Yes'){
+                                          diabetsdata=1;
+
+                                        }else if(value== 'Diabetes: No'){
+                                          diabetsdata=0;
+                                        }
+
+                                      },
 
                                       value: value,
 
@@ -278,7 +327,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             ),
                           ),
                           Divider(
-                            color: Colors.grey,
+                            color: diabetescolor,
                             height: 6,
                             thickness: 2,
 
@@ -289,11 +338,16 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             decoration: BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(
-                                  color: Colors.grey[100],
+                                  color: followucolor,
                                 ),
                               ),
                             ),
                             child: TextField(
+                                keyboardType: TextInputType.number,
+
+                              onChanged: (value){
+                                followudata=int.parse(value);
+                              },
                               style: TextStyle(
                                   color: Colors.white
                               ),
@@ -317,10 +371,31 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                     1,
                     GestureDetector(
                       onTap: (){
-                        //take the data
-                        // check empty data
+                        //agedata == null? agecolor=emptyfield:agecolor=normalField;
+                        // smokerdata == null? smokecolor=emptyfield:smokecolor=normalField;
+                        // genderdata == null? gendercolor=emptyfield:gendercolor=normalField;
+                        // diabetsdata == null? diabetescolor=emptyfield:diabetescolor=normalField;
+                        // followudata == null? followucolor=emptyfield:followucolor=normalField;
+                        if( agedata != null && smokerdata != null && genderdata != null && diabetsdata != null && followudata != null){
 
-                        Navigator.pushNamed(context, BloodData.id);
+                          patientData["age"]=agedata;
+                          patientData["smoking"]=smokerdata;
+                          patientData["diabetes"]= diabetsdata;
+                          patientData["sex"]= genderdata;
+                          patientData["time"]= followudata;
+                          print(patientData);
+                          Navigator.pushNamed(context, BloodData.id);
+                        }
+
+
+
+
+
+
+
+
+
+
 
                       },
                       child: Container(
