@@ -28,23 +28,19 @@ class _ResultState extends State<Result> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-
-
-
-
                    SizedBox(
                        height: 20.0
 
                          ),
-                   Center(
+                  Center(
                      child: CircularPercentIndicator(
                        animationDuration: 1000,
                       radius: 150.0,
                       lineWidth: 10.0,
                       animation: true,
-                      percent: (double.parse(predection.substring(1,6))),
+                      percent: (double.parse(predection.substring(1,predection.length -1))),
                       center:  Text(
-                        "${(double.parse(predection.substring(1,6)))*100}%",
+                        "${(double.parse(predection.substring(1,predection.length -1))*100).toStringAsFixed(2)}%",
                         style:
                          TextStyle(fontWeight: FontWeight.bold,color: Colors.white, fontSize: 30.0),
                       ),
@@ -59,19 +55,57 @@ class _ResultState extends State<Result> {
                       circularStrokeCap: CircularStrokeCap.round,
                       progressColor: Colors.red,
                    ),
-                   ),
-                  SizedBox(
-                    height: 20.0,
+                   )
+                  ,SizedBox(
+                    height: 122.0,
                   ),
+                  Column(
+                    children: [
+                      Row(children: [
+                        Icon(Icons.circle ,color: Colors.white,size: 15,),
+                        SizedBox(width: 15.0,),
+                        Text(diagnosisNotes[0],style: TextStyle(color: Colors.white,fontSize: 12),)
 
+                      ],),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Row(children: [
+                        Icon(Icons.circle ,color: Colors.white,size: 15,),
+                        SizedBox(width: 15.0,),
+                        Text(diagnosisNotes[1],style: TextStyle(color: Colors.white,fontSize: 12),)
 
+                      ],),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Row(children: [
+                        Icon(Icons.circle ,color: Colors.white,size: 15,),
+                        SizedBox(width: 15.0,),
+                        Text(diagnosisNotes[2],style: TextStyle(color: Colors.white,fontSize: 12),)
 
-                  Padding(
+                      ],),
+                      SizedBox(
+                        height: 30.0,
+                      ),
+                      Row(children: [
+                        Icon(Icons.circle ,color: Colors.white,size: 15,),
+                        SizedBox(width: 15.0,),
+                        Text(diagnosisNotes[3],style: TextStyle(color: Colors.white,fontSize: 12),)
+
+                      ],),
+
+                    ],
+                  )
+
+                  ,Padding(
                     padding: const EdgeInsets.only(top:150.0),
                     child: FadeAnimation(
                       1,
                       GestureDetector(
                         onTap: (){
+                          diagnosisNotes.clear();
+                          patientData.clear();
                           //take the data
                           // check empty data
                           Navigator.pushNamed(context, PersonalDatascreen.id);
@@ -87,17 +121,13 @@ class _ResultState extends State<Result> {
                           child: Center(
                             child: Text(
                               "Home",
-                              style: TextStyle(color: Colors.white),
+                              style: TextStyle(color: Colors.white,fontSize: 20),
                             ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-
                 ],
               ),
             )

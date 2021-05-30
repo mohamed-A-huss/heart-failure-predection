@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
 import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/ResultScreen.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb;
+Text textnormal= Text('High Blood Pressure',style: TextStyle(
+    color: Colors.grey,
+    fontSize: 15
+),);
+Text textred=Text('Choose High Blood Pressure Condition',style: TextStyle(color: Colors.red,fontSize: 15),);
+Text highbloodtext=textnormal;
+String url;
 int efracdata;
 int hbpdata;
+
+
+
+
 class HeartData extends StatefulWidget {
   static const String id = 'heart data';
   @override
@@ -13,7 +26,14 @@ class HeartData extends StatefulWidget {
 }
 
 class _HeartDataState extends State<HeartData> {
+  final _textejf = TextEditingController();
+  bool _validateejf = false;
   String _chosenHBP;
+  @override
+  void dispose() {
+    _textejf.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,6 +123,7 @@ class _HeartDataState extends State<HeartData> {
                             child: Padding(
                               padding: const EdgeInsets.only(top:50.0),
                               child: TextField(
+                               controller: _textejf,
                                 keyboardType: TextInputType.number,
 
                                 onChanged: (value){
@@ -114,6 +135,7 @@ class _HeartDataState extends State<HeartData> {
                                     color: Colors.white
                                 ),
                                 decoration: InputDecoration(
+                                  errorText: _validateejf ? 'Value Can\'t Be Empty' : null,
                                   border: InputBorder.none,
                                   hintText: "Ejection fraction (percentage)",
                                   hintStyle: TextStyle(color: Colors.grey,),
@@ -165,13 +187,7 @@ class _HeartDataState extends State<HeartData> {
                                   }).toList(),
                                   hint:Padding(
                                     padding: const EdgeInsets.only(left: 9.0),
-                                    child: Text(
-                                      "High blood pressure",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15
-                                      ),
-                                    ),
+                                    child: highbloodtext
                                   ),
                                   onChanged: (String value) {
                                     setState(() {
@@ -202,30 +218,48 @@ class _HeartDataState extends State<HeartData> {
                       1,
                       GestureDetector(
                         onTap: ()async{
-                          if( efracdata != null && hbpdata != null ){
+
+
+                          setState(() {
+                            if(_textejf.text.isEmpty){
+                              _validateejf = true;
+                            }else{
+                              _validateejf = false;
+                            }if(hbpdata==null){
+                              highbloodtext=textred;
+                            }else{
+                              highbloodtext=textnormal;
+                            }
+
+                          });
+
+                          if( _validateejf == false && hbpdata != null ){
                             patientData["ejection_fraction"]=efracdata;
                             patientData["high_blood_pressure"]=hbpdata;
                             print(patientData);
-                            final response = await http.post('http://10.0.2.2:5000/p',body: json.encode(patientData)); //getting the response from our backend server script
-                            //print(response);
-                            final decoded = json.decode(response.body) as Map<String, dynamic>; //converting it from json to key value pair
+                            //kIsWeb
 
+                            if(kIsWeb){
+                              //web url
+                              url='http://127.0.0.1:5000/p';
+                            }else{
+                              //andriod url
+                              url='http://10.0.2.2:5000/p';
+                            }
+                              final response = await http.post(
+                                  url, body: json.encode(
+                                  patientData)); //getting the response from our backend server script
+                            final decoded = json.decode(response.body) as Map<String, dynamic>; //converting it from json to key value pair
                             setState(() {
                                predection = decoded['name'];
 
                               print(predection);//changing the state of our widget on data update
                             });
+                            diagnosisNotes=diagnosis(patientData["ejection_fraction"],patientData["platelets"] ,patientData["serum_creatinine"] ,patientData["serum_sodium"] );
                             if(response.statusCode==200){
                               Navigator.pushNamed(context, Result.id);
                             }
-
-
-
                           }
-                          //take the data
-                          // check empty data
-
-
 
                         },
                         child: Container(

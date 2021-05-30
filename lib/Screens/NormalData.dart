@@ -2,6 +2,27 @@ import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+
+Text smokertextnormal= Text('Smoker',style: TextStyle(
+    color: Colors.grey,
+    fontSize: 15
+),);
+Text diabetstextnormal= Text('Diabets',style: TextStyle(
+    color: Colors.grey,
+    fontSize: 15
+),);
+Text gendertextnormal= Text('Gender',style: TextStyle(
+    color: Colors.grey,
+    fontSize: 15
+),);
+Text gendertextred=Text('Choose Gender',style: TextStyle(color: Colors.red,fontSize: 15),);
+Text diabetstextred=Text('Choose Diabets Condition',style: TextStyle(color: Colors.red,fontSize: 15),);
+Text smokertextred=Text('Choose Smoking Condition',style: TextStyle(color: Colors.red,fontSize: 15),);
+Text smokertext=smokertextnormal;
+Text diabetstext=diabetstextnormal;
+Text gendertext=gendertextnormal;
+
+
 int agedata;
 int smokerdata;
 int diabetsdata;
@@ -22,10 +43,21 @@ Color gendercolor=normalField;
 Color diabetescolor=normalField;
 Color followucolor=normalField;
 class _PersonalDatascreenState extends State<PersonalDatascreen> {
+  final _textage = TextEditingController();
+  final _texttime = TextEditingController();
+  bool _validateage = false;
+  bool _validatetime = false;
   String _chosenGender;
   String _chosenSmoker;
   String _chosenDiabetes;
 
+  @override
+  void dispose() {
+    _textage.dispose();
+    _texttime.dispose();
+
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,8 +141,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                               ),
                             ),
                             child: TextField(
-
-
+                              controller: _textage,
                                 keyboardType: TextInputType.number,
 
                               onChanged: (value){
@@ -122,6 +153,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                 color: Colors.white
                               ),
                               decoration: InputDecoration(
+                                errorText: _validateage ? 'Value Can\'t Be Empty' : null,
                                 border: InputBorder.none,
                                 hintText: "Age",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -164,6 +196,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                       },
 
 
+
                                       value: value,
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 9.0),
@@ -173,13 +206,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   }).toList(),
                                   hint:Padding(
                                     padding: const EdgeInsets.only(left: 9.0),
-                                    child: Text(
-                                      "Gender",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15
-                                         ),
-                                    ),
+                                    child:gendertext
                                   ),
                                   onChanged: (String value) {
                                     setState(() {
@@ -233,6 +260,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
 
                                       value: value,
 
+
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 9.0),
                                         child: Text(value,style:TextStyle(color:Colors.white),),
@@ -241,13 +269,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   }).toList(),
                                   hint:Padding(
                                     padding: const EdgeInsets.only(left: 9.0),
-                                    child: Text(
-                                      "Smoker",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15
-                                      ),
-                                    ),
+                                    child: smokertext
                                   ),
                                   onChanged: (String value) {
                                     setState(() {
@@ -301,6 +323,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
 
                                       value: value,
 
+
                                       child: Padding(
                                         padding: const EdgeInsets.only(left: 9.0),
                                         child: Text(value,style:TextStyle(color:Colors.white),),
@@ -309,13 +332,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   }).toList(),
                                   hint:Padding(
                                     padding: const EdgeInsets.only(left: 9.0),
-                                    child: Text(
-                                      "Diabetes",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontSize: 15
-                                      ),
-                                    ),
+                                    child: diabetstext
                                   ),
                                   onChanged: (String value) {
                                     setState(() {
@@ -344,6 +361,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                             ),
                             child: TextField(
                                 keyboardType: TextInputType.number,
+                              controller: _texttime,
 
                               onChanged: (value){
                                 followudata=int.parse(value);
@@ -352,6 +370,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                                   color: Colors.white
                               ),
                               decoration: InputDecoration(
+                                errorText: _validatetime ? 'Value Can\'t Be Empty' : null,
                                 border: InputBorder.none,
                                 hintText: "Follow Up Time (In Days)",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -371,23 +390,49 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                     1,
                     GestureDetector(
                       onTap: (){
-                        //agedata == null? agecolor=emptyfield:agecolor=normalField;
-                        // smokerdata == null? smokecolor=emptyfield:smokecolor=normalField;
-                        // genderdata == null? gendercolor=emptyfield:gendercolor=normalField;
-                        // diabetsdata == null? diabetescolor=emptyfield:diabetescolor=normalField;
-                        // followudata == null? followucolor=emptyfield:followucolor=normalField;
-                        if( agedata != null && smokerdata != null && genderdata != null && diabetsdata != null && followudata != null){
 
-                          patientData["age"]=agedata;
-                          patientData["smoking"]=smokerdata;
-                          patientData["diabetes"]= diabetsdata;
-                          patientData["sex"]= genderdata;
-                          patientData["time"]= followudata;
-                          print(patientData);
-                          Navigator.pushNamed(context, BloodData.id);
-                        }
+                  setState(() {
+                    if(_textage.text.isEmpty){
+                      _validateage = true;
+                    }else{
+                      _validateage = false;
+                    }
+                    if(_texttime.text.isEmpty){
+                      _validatetime = true;
+                    }else{
+                      _validatetime = false;
+                    }if(_chosenGender==null){
+                      gendertext=gendertextred;
+                    }else{
+                      gendertext=gendertextnormal;
+                    }
+                    if(_chosenSmoker==null){
+                      smokertext=smokertextred;
+                    }else{
+                      smokertext=smokertextnormal;
+                    }
+                    if(_chosenDiabetes==null){
+                      diabetstext=diabetstextred;
+                    }else{
+                      diabetstext=diabetstextnormal;
+                    }
 
+                    if((_validateage == false )&&( _validatetime == false)&&(_chosenGender!=null)&&(_chosenSmoker!=null)&&(_chosenDiabetes!=null) ){
+                      patientData["age"]=agedata;
+                      patientData["smoking"]=smokerdata;
+                      patientData["diabetes"]= diabetsdata;
+                      patientData["sex"]= genderdata;
+                      patientData["time"]= followudata;
+                      print(agedata);
+                      print(smokerdata);
+                      print(diabetsdata);
+                      print(genderdata);
+                      print(followudata);
+                      Navigator.pushNamed(context, BloodData.id);
+                    }
 
+                   // Navigator.pushNamed(context, BloodData.id);
+                  });
 
 
 

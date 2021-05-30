@@ -3,12 +3,17 @@ import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/HeartCond.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
 
-
+Text textnormal= Text('Anemia',style: TextStyle(
+    color: Colors.grey,
+    fontSize: 15
+),);
+Text textred=Text('Choose Anemia Condition',style: TextStyle(color: Colors.red,fontSize: 15),);
+Text anemiatext=textnormal;
 int anemiadata;
 int ckdata;
 int ssodiumdata;
 int plateletsdata;
-int screatidata;
+double screatidata;
 class BloodData extends StatefulWidget {
   static const String id = 'blood data';
   @override
@@ -16,8 +21,23 @@ class BloodData extends StatefulWidget {
 }
 
 class _BloodDataState extends State<BloodData> {
+  final _textck = TextEditingController();
+  final _textss = TextEditingController();
+  bool _validateck = false;
+  bool _validatss = false;
+  final _textplate = TextEditingController();
+  final _textsc = TextEditingController();
+  bool _validatplate = false;
+  bool _validatsc = false;
   String _chosenAnemia;
-
+  @override
+  void dispose() {
+    _textck.dispose();
+    _textss.dispose();
+    _textplate.dispose();
+    _textsc.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +145,7 @@ class _BloodDataState extends State<BloodData> {
                           }).toList(),
                           hint:Padding(
                             padding: const EdgeInsets.only(left: 9.0),
-                            child: Text(
-                              "Anemia",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 15
-                              ),
-                            ),
+                            child: anemiatext
                           ),
                           onChanged: (String value) {
                             setState(() {
@@ -168,6 +182,7 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              controller: _textck,
                               onChanged: (value){
                                 setState(() {
 
@@ -182,6 +197,7 @@ class _BloodDataState extends State<BloodData> {
                                 border: InputBorder.none,
                                 hintText: "Creatine kinase (mcg/L)",
                                 hintStyle: TextStyle(color: Colors.grey,),
+                                errorText: _validateck ? 'Value Can\'t Be Empty' : null,
                               ),
                             ),
                           ),
@@ -195,6 +211,7 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              controller: _textss,
                               onChanged: (value){
                                 setState(() {
 
@@ -203,9 +220,12 @@ class _BloodDataState extends State<BloodData> {
                               },
                               keyboardType: TextInputType.number,
                               style: TextStyle(
+
+
                                   color: Colors.white
                               ),
                               decoration: InputDecoration(
+                                errorText: _validatss ? 'Value Can\'t Be Empty' : null,
                                 border: InputBorder.none,
                                 hintText: "Serum sodium (mEq/L)",
                                 hintStyle: TextStyle(color: Colors.grey,),
@@ -222,6 +242,7 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              controller: _textplate,
                               onChanged: (value){
                                 setState(() {
 
@@ -233,6 +254,7 @@ class _BloodDataState extends State<BloodData> {
                                   color: Colors.white
                               ),
                               decoration: InputDecoration(
+                                errorText: _validatplate ? 'Value Can\'t Be Empty' : null,
                                 border: InputBorder.none,
                                 hintText: "Platelets (kiloplatelets/mL)",
                                 hintStyle: TextStyle(color: Colors.grey,),
@@ -251,10 +273,10 @@ class _BloodDataState extends State<BloodData> {
                               ),
                             ),
                             child: TextField(
+                              controller: _textsc,
                               onChanged: (value){
                                 setState(() {
-
-                                  screatidata=int.parse(value);
+                                  screatidata=double.parse(value);
                                 });
                               },
                               keyboardType: TextInputType.number,
@@ -262,6 +284,7 @@ class _BloodDataState extends State<BloodData> {
                                   color: Colors.white
                               ),
                               decoration: InputDecoration(
+                                errorText: _validatsc ? 'Value Can\'t Be Empty' : null,
                                 border: InputBorder.none,
                                 hintText: "Serum creatinine (mg/dL)",
                                 hintStyle: TextStyle(color: Colors.grey),
@@ -281,11 +304,33 @@ class _BloodDataState extends State<BloodData> {
                     1,
                     GestureDetector(
                       onTap: (){
-                        //take the data
-                        // check empty data
-                        if( anemiadata != null && ckdata != null && ssodiumdata != null && plateletsdata != null && screatidata != null){
+                      setState(() {
+                        if(_textss.text.isEmpty){
+                          _validatss = true;
+                        }else{
+                          _validatss = false;
+                        }
+                        if(_textck.text.isEmpty){
+                          _validateck = true;
+                        }else{
+                          _validateck = false;
+                        }if(_textsc.text.isEmpty){
+                          _validatsc = true;
+                        }else{
+                          _validatsc = false;
+                        }
+                        if(_textplate.text.isEmpty){
+                          _validatplate = true;
+                        }else{
+                          _validatplate = false;
+                        }
+                        if(_chosenAnemia==null){
+                          anemiatext=textred;
+                        }else{
+                          anemiatext=textnormal;
+                        }
 
-
+                        if((_validateck == false )&&( _validatss == false)&&(_validatsc == false)&&(_validatplate == false)&&(_chosenAnemia!=null) ){
                           patientData["anaemia"]=anemiadata;
                           patientData["creatinine_phosphokinase"]=ckdata;
                           patientData["serum_sodium"]= ssodiumdata;
@@ -294,6 +339,13 @@ class _BloodDataState extends State<BloodData> {
                           print(patientData);
                           Navigator.pushNamed(context, HeartData.id);
                         }
+
+                      });
+
+
+
+
+
 
 
                       },
