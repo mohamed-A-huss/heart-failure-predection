@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Text smokertextnormal= Text('Smoker',style: TextStyle(
     color: Colors.grey,
@@ -79,7 +80,7 @@ class _PersonalDatascreenState extends State<PersonalDatascreen> {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage("assets/images/1.png"),
+                              image: kIsWeb?AssetImage("assets/images/2.png") :AssetImage("assets/images/1.png"),
                             ),
                           ),
                         ),

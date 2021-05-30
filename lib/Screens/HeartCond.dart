@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:heartfailurepredictor/Screens/BloodDataScreen.dart';
 import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/ResultScreen.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
@@ -56,7 +55,7 @@ class _HeartDataState extends State<HeartData> {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage("assets/images/1.png"),
+                              image: kIsWeb?AssetImage("assets/images/2.png") :AssetImage("assets/images/1.png"),
                             ),
                           ),
                         ),

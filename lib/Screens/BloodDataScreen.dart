@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Animation/FadeAnimation.dart';
 import 'package:heartfailurepredictor/Screens/HeartCond.dart';
 import 'package:heartfailurepredictor/Screens/RegressionData.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 Text textnormal= Text('Anemia',style: TextStyle(
     color: Colors.grey,
@@ -60,7 +61,7 @@ class _BloodDataState extends State<BloodData> {
                           decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: AssetImage("assets/images/1.png"),
+                              image: kIsWeb?AssetImage("assets/images/2.png") :AssetImage("assets/images/1.png"),
                             ),
                           ),
                         ),
