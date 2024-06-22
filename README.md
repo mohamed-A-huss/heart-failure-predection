@@ -1,3 +1,3 @@
-# heartfailurepredictor
+# heart failure predictor
 
 A  Flutter application.
